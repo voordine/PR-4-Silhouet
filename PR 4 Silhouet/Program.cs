@@ -1,6 +1,6 @@
 ﻿using System; 
 
-public class gebouw : IComparable<gebouw>
+public class gebouw
 {
     public int links;
     public int hoogte;
@@ -11,11 +11,6 @@ public class gebouw : IComparable<gebouw>
         this.links = l;
         this.hoogte = h;
         this.rechts = r;
-    }
-
-    public int CompareTo(gebouw other)
-    {
-        return this.links.CompareTo(other.links);
     }
 }
 
@@ -36,38 +31,41 @@ public static class hi
     {
         int nl = q - p + 1;
         int nr = r - q;
-        gebouw[] al = new gebouw[nl-1];
-        gebouw[] ar = new gebouw[nr-1];
-        int i, j;
-        int k = p;
-        var merged = new List<strook>();
+        gebouw[] L = new gebouw[nl-1];
+        gebouw[] R = new gebouw[nr-1];
+        int i, j, k;
+        k = p;
+        List<strook> merged = new List<strook>();
 
-        for (i = 0; i <= nl-1; ++i) { al[i] = a[p+i]; }
-        for (j = 0; j <= nr-1; ++j) { ar[j] = a[p+j+1]; }
+        for (i = 0; i < nl; ++i) { L[i] = a[p+i]; }
+        for (j = 0; j < nr; ++j) { R[j] = a[p+j+1]; }
+
+        i = 0;
+        j = 0;
 
         while (i < nl && j < nr) 
         { 
-            if (al[i].CompareTo(ar[j]) <= 0)
+            if (L[i].links <= R[j].links)
             {
-                a[k] = al[i];
+                a[k] = L[i];
                 i++;
             }
             else
             {
-                a[k] = ar[j];
+                a[k] = R[j];
                 j++;
             }
             k++;
         }
         while (i < nl)
         {
-            a[k] = al[i];
+            a[k] = L[i];
             i++;
             k++;
         }
         while (j < nr)
         {
-            a[k] = ar[j];
+            a[k] = R[j];
             j++;
             k++;
         }
@@ -82,11 +80,10 @@ public static class hi
             strook strk2 = new strook(a[0].rechts, 0);
             return new List<strook> { strk1, strk2 };
         }
-        //if (p >= r) { return; }
         int q = (p+r)/2;
         mergesort(a, p, q);
         mergesort(a, q + 1, r);
-        merge(a, p, q, r);
+        return merge(a, p, q, r);
     }
 
     public static void Main()
@@ -105,7 +102,11 @@ public static class hi
             gebouwen.Add(new gebouw(l, h, r));
             i++;
         }
-
-        Console.WriteLine();
+        List<strook> result = mergesort(gebouwen, 0, gebouwen.Count - 1);
+        Console.WriteLine(result.Count);
+        foreach (var strook in result) 
+        {
+            Console.WriteLine($"{strook.x} {strook.h}");
+        }
     }
 }
