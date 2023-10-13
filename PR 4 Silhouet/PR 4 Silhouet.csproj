@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="C:\Users\nadin\OneDrive\Documenten\!UU\year 2 %2823-24%29\blok 1\daki\practica\testje.cs" Link="testje.cs" />
+  </ItemGroup>
+
 </Project>
